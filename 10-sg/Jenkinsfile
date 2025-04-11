@@ -24,7 +24,7 @@ pipeline{
                     """
             }
         }
-         }
+        }
                 
         stage('Apply or Destroy') {
              /* input {
@@ -71,6 +71,8 @@ pipeline{
                     }
                 }
               
+    }
+        }
     }
     post {
         always {
