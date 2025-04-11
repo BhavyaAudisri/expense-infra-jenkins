@@ -5,6 +5,7 @@ pipeline{
     options {
         timeout(time: 30, unit: 'MINUTES')
         disableConcurrentBuilds()
+        ansiColor('xterm')
     }
     
     parameters {
@@ -25,8 +26,10 @@ pipeline{
         stage('plan') {
             steps {
                 withAWS(region:'us-east-1', credentials :'AWS-CREDS') {
-                    sh ' cd 00-vpc '
-                    sh 'terraform plan -out=tfplan'
+                    sh """
+                         cd 00-vpc 
+                         terraform plan -out=tfplan
+                    """
                 }
                 
             }
