@@ -14,26 +14,18 @@ pipeline{
         password(name: 'PASSWORD', defaultValue: 'SECRET', description: 'Enter a password')
     }
     stages {
-        stage('Init') {
-            steps {
-                sh  """
-                    cd 00-vpc 
-                    terraform init --reconfigure
-
-                """
-            }
-        }
-        stage('plan') {
+        stage('Init and plan') {
             steps {
                 withAWS(region:'us-east-1', credentials :'AWS-CREDS') {
-                    sh """
-                         cd 00-vpc 
-                         terraform plan -out=tfplan
+                    sh  """
+                        cd 00-vpc 
+                        terraform init --reconfigure
+                        terraform plan -out=tfplan
                     """
-                }
-                
             }
         }
+         }
+                
         stage('Deploy') {
              when {
                 //branch 'production'
