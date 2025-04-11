@@ -1,6 +1,7 @@
 resource "aws_key_pair" "eks" {
   key_name   = "eks-key"
-  public_key = file("E:\\devops\\repos\\eks.pub")
+ # public_key = file("E:\\devops\\repos\\eks.pub")
+  public_key = file("${path.module}/eks.pub")
 }
 
 module "eks" {
