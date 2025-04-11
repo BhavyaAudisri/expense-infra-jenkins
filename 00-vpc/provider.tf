@@ -12,8 +12,7 @@ terraform {
     key     = "jenkins-vpc"
     region  = "us-east-1"
     encrypt = true
-    use_locking {
-      table = "somi-jenkins-infra"
+    use_locking = true
     }
   }
 }
