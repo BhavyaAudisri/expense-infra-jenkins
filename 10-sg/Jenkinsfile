@@ -27,14 +27,14 @@ pipeline{
          }
                 
         stage('Apply or Destroy') {
-             /* input {
+             input {
                 message "Should we continue to ${params.ACTION}"
                 ok "Yes, we should."
-            }  */
+            } 
              steps {
                 withAWS(region: 'us-east-1', credentials: 'AWS-CREDS') {
                     sh """
-                        cd 00-vpc
+                        cd 10-sg
                         if [ ${params.ACTION} == 'apply' ]
                         then
                             terraform apply -auto-approve tfplan
@@ -52,14 +52,7 @@ pipeline{
                 sh 'echo this is scan'
             }
         }
-        stage ('Trigger SG') {
-                when {
-                    expression { params.ACTION == 'apply' }
-                }
-                steps{
-                    build job: '10-sg', parameters: [[$class: 'ChoiceParameterValue', name: 'ACTION', value: 'apply']]
-                }
-            }
+      
     }
     post {
         always {
