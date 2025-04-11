@@ -37,3 +37,6 @@ output "database_subnet_ids" {
 output "gw_id" {
   value = module.vpc.gw_id
 }
+output "db_subnet_group" {
+  value = module.vpc.db_subnet_group
+}
