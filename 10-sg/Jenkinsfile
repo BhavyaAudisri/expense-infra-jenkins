@@ -18,7 +18,7 @@ pipeline{
             steps {
                 withAWS(region:'us-east-1', credentials :'AWS-CREDS') {
                     sh  """
-                        cd 00-vpc 
+                        cd 10-sg 
                         terraform init --reconfigure
                         terraform plan -out=tfplan
                     """
@@ -27,10 +27,10 @@ pipeline{
          }
                 
         stage('Apply or Destroy') {
-             input {
+             /* input {
                 message "Should we continue to ${params.ACTION}"
                 ok "Yes, we should."
-            } 
+            }  */
              steps {
                 withAWS(region: 'us-east-1', credentials: 'AWS-CREDS') {
                     sh """
@@ -47,12 +47,15 @@ pipeline{
                     }
 
         }
-        stage('scan') {
-            steps {
-                sh 'echo this is scan'
+        stage ('Destroy VPC') {
+            when {
+                expression { params.ACTION == 'destroy' }
+            }
+            steps{
+                build job: '00-vpc', parameters: [string(name: 'ACTION', value: "destroy")], wait: false
             }
         }
-      
+              
     }
     post {
         always {
