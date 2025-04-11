@@ -11,7 +11,6 @@ terraform {
     bucket         = "somi-jenkins-infra"
     key            = "jenkins-vpc"
     region         = "us-east-1"
-    encrypt        = true
     dynamodb_table = "somi-jenkins-infra"  # Enables state locking
   }
 }
