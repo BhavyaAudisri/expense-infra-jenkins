@@ -26,14 +26,23 @@ pipeline{
         }
          }
                 
-        stage('Deploy') {
-             when {
-                //branch 'production'
-                 expression { env.GIT_BRANCH == "origin/main" }
+        stage('Apply or Destroy') {
+             steps {
+                withAWS(region:'us-east-1', credentials :'AWS-CREDS') {
+                    sh  """
+                        cd 00-vpc 
+                        if [${params.ACTION} == 'apply']
+                        then
+                        terraform apply -auto-approve tfplan
+                        elis [ ${params.ACTION} == 'destroy' ]
+                        then 
+                        terraform destroy -auto-approve
+                        fi
+
+                    """
             }
-            steps {
-                sh 'echo this is deploy'
-            }
+                    }
+
         }
         stage('scan') {
             steps {
