@@ -54,7 +54,7 @@ resource "aws_cloudfront_distribution" "expense" {
   }
 
   viewer_certificate {
-    acm_certificate_arn = local.https_certificate_arn
+    acm_certificate_arn = local.alb_ingress_listener_arn
     ssl_support_method = "sni-only"
     minimum_protocol_version = "TLSv1.2_2021"
   }
