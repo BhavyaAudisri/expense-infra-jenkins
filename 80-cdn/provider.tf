@@ -7,10 +7,10 @@ terraform {
   }
 
   backend "s3" {
-    bucket         = "somi-tf-dev"
-    key            = "dev-cdn-test" # you should have unique keys with in the bucket, same key should not be used in other repos or tf projects
+    bucket         = "somi-jenkins-infra"
+    key            = "jenkins-cdn-test" # you should have unique keys with in the bucket, same key should not be used in other repos or tf projects
     region         = "us-east-1"
-    dynamodb_table = "somi-tf-dev"
+    dynamodb_table = "somi-jenkins-infra"
   }
 }
 
