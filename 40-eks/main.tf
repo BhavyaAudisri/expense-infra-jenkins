@@ -57,7 +57,7 @@ module "eks" {
     }
   
 
-    green = {
+    /* green = {
       instance_types = ["t3.micro"]
       key_name = aws_key_pair.eks.key_name
       min_size      = 2
@@ -71,7 +71,7 @@ module "eks" {
       }
       # EKS takes AWS Linux 2 as it's OS to the nodes
      
-    }
+    } */
   }
   
   tags = merge(
