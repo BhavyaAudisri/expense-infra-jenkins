@@ -47,6 +47,58 @@ pipeline{
                     }
 
         }
+        stage('Destroy') {
+            when {
+                expression { params.ACTION == 'destroy' }
+            }
+            parallel {
+                stage('ECR') {
+                    steps {
+                        build job: '70-ecr', parameters: [string(name: 'ACTION', value: "destroy")], wait: false
+                    }
+                }
+                stage('ALB') {
+                    steps {
+                        build job: '60-alb', parameters: [string(name: 'ACTION', value: "destroy")], wait: false
+                    }
+                }
+                stage('EKS') {
+                    steps {
+                        build job: '40-eks', parameters: [string(name: 'ACTION', value: "destroy")], wait: true
+                    }
+                }
+                stage('Bastion') {
+                    steps {
+                        build job: '20-bastion', parameters: [string(name: 'ACTION', value: "destroy")], wait: false
+                    }
+                }
+
+            }
+        } 
+        stage('Sequential') {
+            when {
+                expression { params.ACTION == 'destroy' }
+            }
+            stages {
+                
+                stage('ACM') {
+                    steps {
+                        build job: '50-acm', parameters: [string(name: 'ACTION', value: "destroy")], wait: false
+                    }
+                }
+                stage('SG-Destroy'){
+                    steps {
+                        build job: '10-sg', parameters: [string(name: 'ACTION', value: "destroy")], wait: true
+                    }
+                }
+                stage('VPC-Destroy'){
+                    steps {
+                        build job: '00-vpc', parameters: [string(name: 'ACTION', value: "destroy")], wait: false
+                    }
+                }
+            }
+                
+        }
         
     }
     post {
