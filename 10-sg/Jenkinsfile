@@ -98,11 +98,11 @@ pipeline{
                         build job: '60-alb', parameters: [string(name: 'ACTION', value: "apply")], wait: false
                     }
                 }
-                stage('CDN') {
+                /* stage('CDN') {
                     steps {
                         build job: '80-cdn', parameters: [string(name: 'ACTION', value: "apply")], wait: false
                     }
-                }
+                } */
             }
     }
     }
